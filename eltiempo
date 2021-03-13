@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require_relative 'lib/error'
 require_relative 'lib/global'
 require_relative 'lib/weather_api'
