@@ -10,7 +10,7 @@ OptionParser.new do |opts|
   raise WeatherBcn::ConfigError, 'Affiliate ID is not present' unless AFFILIATE_ID
 
   opts.on('-td', '--today CITY', 'Show today weather for the selected city') do |city|
-    puts "Show today weather for #{city}"
+    puts "Datos climaticos para hoy de #{city}:"
     today_weather(city)
   end
 
