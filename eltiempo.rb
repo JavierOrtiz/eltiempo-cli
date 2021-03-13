@@ -1,9 +1,9 @@
 require_relative 'lib/error'
 require_relative 'lib/global'
+require_relative 'lib/tiempo_api'
 require_relative 'lib/string'
 
 require 'optparse'
-require 'httparty'
 require 'pry-rails'
 
 OptionParser.new do |opts|
@@ -11,9 +11,7 @@ OptionParser.new do |opts|
 
   opts.on('-td', '--today CITY', 'Show today weather for the selected city') do |city|
     puts "Show today weather for #{city}"
-    response = HTTParty.get(API_URL)
-    location_data = response.parsed_response.dig('report', 'location', 'data')
-    puts location_data.detect {|location| location.dig('name', '__content__').remove_accents.downcase == city.remove_accents.remove_accents.downcase }
+    today_weather(city)
   end
 
   opts.on('-amax', '--av_max CITY', 'Get max degrees for today of the selected city') do |city|
