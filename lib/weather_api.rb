@@ -35,7 +35,9 @@ class WeatherApi
   end
 
   def location_json
-    location_data = handle_response(API_URL).dig('report', 'location', 'data')
+    raise WeatherCli::ConfigError, 'Division ID is not present' unless DIVISION_ID
+
+    location_data = handle_response(API_URL + "&division=#{DIVISION_ID}").dig('report', 'location', 'data')
     location_data.detect do |location|
       location.dig('name', '__content__').remove_accents.downcase == city.remove_accents.downcase
     end

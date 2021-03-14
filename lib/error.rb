@@ -1,4 +1,4 @@
-class WeatherBcn
+class WeatherCli
   class Error < StandardError
   end
 

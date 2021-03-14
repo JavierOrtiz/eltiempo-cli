@@ -1,4 +1,4 @@
-# Welcome to WeatherBcn
+# Welcome to WeatherCli
 
 ## Configuration
 In order to start using this script, its needed have the `Affiliate ID` in order to get access to Tiempo.com API. To set up the Affiliate ID correctly, you should add in the `.bashrc` file the ENV `AFFILIATE_ID` with your current ID. Or you can write at the start of any command `AFFILIATE_ID=current-id ./eltiempo --command` 
