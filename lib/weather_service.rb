@@ -1,6 +1,7 @@
 require 'httparty'
+require_relative 'error'
 
-class WeatherApi
+class WeatherService
   attr_reader :city
 
   def initialize(city)
@@ -8,6 +9,8 @@ class WeatherApi
   end
 
   def print_today_weather
+    valid_config?
+
     city_response.each do |var|
       puts "#{var['name']}: #{var.dig('data', 'forecast').first['value']}"
     end && true
@@ -18,7 +21,7 @@ class WeatherApi
     days_object['data']['forecast'].each do |day|
       av_data = av_max_object.dig('data', 'forecast').detect { |av| av['data_sequence'] == day['data_sequence'] }
       puts "#{day['value']} - #{av_data['value']}º"
-    end
+    end && true
   end
 
   private
@@ -35,8 +38,6 @@ class WeatherApi
   end
 
   def location_json
-    raise WeatherCli::ConfigError, 'Division ID is not present' unless DIVISION_ID
-
     location_data = handle_response(API_URL + "&division=#{DIVISION_ID}").dig('report', 'location', 'data')
     location_data.detect do |location|
       location.dig('name', '__content__').remove_accents.downcase == city.remove_accents.downcase
@@ -46,5 +47,10 @@ class WeatherApi
   def handle_response(url)
     response = HTTParty.get(url + "&affiliate_id=#{AFFILIATE_ID}")
     response.parsed_response
+  end
+
+  def valid_config?
+    raise WeatherCli::ConfigError, 'Affiliate ID is not present' unless AFFILIATE_ID
+    raise WeatherCli::ConfigError, 'Division ID is not present' unless DIVISION_ID
   end
 end

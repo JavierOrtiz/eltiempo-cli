@@ -1,19 +1,74 @@
-require_relative '../../lib/weather_api'
+require 'rspec/autorun'
+require_relative '../../lib/weather_service'
 require_relative '../../lib/global'
 
-describe WeatherApi do
-  let(:subject) { WeatherApi.new(city) }
-  let(:city) { 'Gavà' }
+describe WeatherService do
+  describe '#print_today_weather' do
+    subject { WeatherService.new(city) }
+    let(:city) { 'Gavà' }
 
-  before do
-    stub_const("AFFILIATE_ID", 'test-token')
-    allow(subject).to receive(:location_json).and_return({'name'=>{'__content__'=>'Gavà', 'id'=>'1381'}, 'url'=>'http://api.tiempo.com/index.php?api_lang=es&localidad=1381'})
-    allow(subject).to receive(:city_response).and_return(city_response_data)
+    before do
+      allow(subject).to receive(:location_json).and_return({'name'=>{'__content__'=>'Gavà', 'id'=>'1381'}, 'url'=>'http://api.tiempo.com/index.php?api_lang=es&localidad=1381'})
+      allow(subject).to receive(:city_response).and_return(city_response_data)
+      stub_const("AFFILIATE_ID", 'test-token')
+    end
+
+    context 'configured correctly' do
+      it 'should return the time of today' do
+        expect(subject.print_today_weather).to be_truthy
+      end
+    end
+
+    context 'affiliate ID not present' do
+      before do
+        stub_const("AFFILIATE_ID", nil)
+      end
+      it 'should return the time of today' do
+        expect{subject.print_today_weather}.to raise_error(WeatherCli::ConfigError)
+      end
+    end
+
+    context 'division ID not present' do
+      before do
+        stub_const("DIVISION_ID", nil)
+      end
+      it 'should return the time of today' do
+        expect{subject.print_today_weather}.to raise_error(WeatherCli::ConfigError)
+      end
+    end
   end
+  describe '#print_average_temperature' do
+    subject { WeatherService.new(city) }
+    let(:city) { 'Gavà' }
 
-  context '#print_today_weather' do
-    it 'should return the time of today' do
-      expect(subject.print_today_weather).to be_truthy
+    before do
+      allow(subject).to receive(:location_json).and_return({'name'=>{'__content__'=>'Gavà', 'id'=>'1381'}, 'url'=>'http://api.tiempo.com/index.php?api_lang=es&localidad=1381'})
+      allow(subject).to receive(:city_response).and_return(city_response_data)
+      stub_const("AFFILIATE_ID", 'test-token')
+    end
+
+    context 'configured correctly' do
+      it 'should return the time of today' do
+        expect(subject.print_today_weather).to be_truthy
+      end
+    end
+
+    context 'affiliate ID not present' do
+      before do
+        stub_const("AFFILIATE_ID", nil)
+      end
+      it 'should return the time of today' do
+        expect{subject.print_today_weather}.to raise_error(WeatherCli::ConfigError)
+      end
+    end
+
+    context 'division ID not present' do
+      before do
+        stub_const("DIVISION_ID", nil)
+      end
+      it 'should return the time of today' do
+        expect{subject.print_today_weather}.to raise_error(WeatherCli::ConfigError)
+      end
     end
   end
 end
