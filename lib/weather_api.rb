@@ -10,7 +10,7 @@ class WeatherApi
   def print_today_weather
     city_response.each do |var|
       puts "#{var['name']}: #{var.dig('data', 'forecast').first['value']}"
-    end
+    end && true
   end
 
   def print_average_temperature(order_key)
