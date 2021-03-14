@@ -17,6 +17,8 @@ class WeatherService
   end
 
   def print_average_temperature(order_key)
+    valid_config?
+
     av_max_object = city_response.detect { |var| var['name'] == order_key }
     days_object['data']['forecast'].each do |day|
       av_data = av_max_object.dig('data', 'forecast').detect { |av| av['data_sequence'] == day['data_sequence'] }
