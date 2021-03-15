@@ -54,5 +54,6 @@ class WeatherService
   def valid_config?
     raise WeatherCli::ConfigError, 'Affiliate ID is not present' unless AFFILIATE_ID
     raise WeatherCli::ConfigError, 'Division ID is not present' unless DIVISION_ID
+    raise WeatherCli::CityNotFound, "#{city} not found in the current division" unless location_json
   end
 end

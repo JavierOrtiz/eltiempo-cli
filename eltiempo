@@ -7,19 +7,20 @@ require_relative 'lib/string'
 require 'optparse'
 require 'pry-rails'
 
-OptionParser.new do |opts|
-  opts.on('-td', '--today CITY', 'Show today weather for the selected city') do |city|
-    puts "Datos climaticos para hoy de #{city}:"
-    WeatherService.new(city).print_today_weather
-  end
+begin
+  OptionParser.new do |opts|
+    opts.on('-td', '--today CITY', 'Show today weather for the selected city') do |city|
+      WeatherService.new(city).print_today_weather
+    end
 
-  opts.on('-amax', '--av_max CITY', 'Get max degrees for today of the selected city') do |city|
-    puts "Temperatura máxima por días para #{city}:"
-    WeatherService.new(city).print_average_temperature(MAX_KEY)
-  end
+    opts.on('-amax', '--av_max CITY', 'Get max degrees for today of the selected city') do |city|
+      WeatherService.new(city).print_average_temperature(MAX_KEY)
+    end
 
-  opts.on('-amin', '--av_min CITY', 'Get min degrees for today of the selected city') do |city|
-    puts "Temperatura mínima por días para #{city}:"
-    WeatherService.new(city).print_average_temperature(MIN_KEY)
-  end
-end.parse!
+    opts.on('-amin', '--av_min CITY', 'Get min degrees for today of the selected city') do |city|
+      WeatherService.new(city).print_average_temperature(MIN_KEY)
+    end
+  end.parse!
+rescue => e
+  puts e.message
+end
